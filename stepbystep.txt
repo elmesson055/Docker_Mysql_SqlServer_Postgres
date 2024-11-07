@@ -1,0 +1,37 @@
+Aqui está o deploy.sh, um script que automatiza o processo de subir o ambiente Docker, garantindo que todos os contêineres e volumes estejam corretamente configurados. 
+Este script também limpa contêineres antigos, cria uma rede personalizada se necessário, e executa o docker-compose para iniciar o ambiente.
+
+Salve-o como deploy.sh na raiz do projeto (projeto_docker/).
+
+# Executa o script principal
+main
+Explicação das Partes do Script
+Variáveis de Ambiente:
+
+PROJECT_NAME: Define o nome do projeto no Docker Compose para facilitar o isolamento de contêineres.
+COMPOSE_FILE: Especifica o arquivo docker-compose.yml que será usado.
+Funções:
+
+check_docker: 
+
+Verifica se o Docker está instalado e em execução.
+clean_old_containers: Remove qualquer contêiner antigo do projeto, incluindo volumes associados.
+create_network: Verifica se a rede rede-sqlserver existe, criando-a se necessário.
+start_services: Inicia todos os serviços definidos no docker-compose.yml.
+show_status: Exibe o status dos contêineres para garantir que todos os serviços estão funcionando corretamente.
+
+Execução Principal:
+
+O script executa cada função em sequência para realizar o deploy completo e, ao final, exibe uma mensagem de sucesso.
+Tornando o Script Executável
+Para rodar o deploy.sh, torne-o executável com o comando:
+
+bash
+Copiar código
+chmod +x deploy.sh
+Depois, execute o script com:
+
+bash
+Copiar código
+./deploy.sh
+Este script fará o deploy completo do ambiente Docker para o seu projeto e exibirá o status dos contêineres ao final.

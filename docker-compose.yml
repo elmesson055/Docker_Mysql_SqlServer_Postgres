@@ -1,0 +1,67 @@
+version: "3.3"
+
+services:
+  servidor_mysql:
+    hostname: servidor_mysql
+    container_name: servidor_mysql
+    image: mysql:5.7.40
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./volumes/mysql/data:/var/lib/mysql:rw
+      - ./deploy/init_mysql:/docker-entrypoint-initdb.d
+      - ./volumes/mysql/backups:/backups:rw  # Volume para backups do MySQL
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Rs5kD85DQk6
+      - MYSQL_USER=user2
+      - MYSQL_PASSWORD=2Rs5kD85DQk6
+      - TZ=America/Sao_Paulo
+    networks:
+      - rede-sqlserver
+
+  sqlserver:
+    hostname: sqlserver
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - MSSQL_PID=Express 
+      - SA_PASSWORD=2Rs5kD85DQk6
+      - ACCEPT_EULA=Y
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./volumes/sqlserver/sqlserver_data:/var/opt/mssql/data
+      - ./volumes/sqlserver/sqlserver_log:/var/opt/mssql/log
+      - ./volumes/sqlserver/sqlserver_secrets:/var/opt/mssql/secrets
+      - ./volumes/sqlserver/backups:/backups:rw  # Volume para backups do SQL Server
+    ports:
+      - "1433:1433"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    restart: always
+    networks:
+      - rede-sqlserver
+
+  servidor_postgres:
+    hostname: servidor_postgres
+    container_name: servidor_postgres
+    image: postgres:15.0
+    environment:
+      - POSTGRES_USER=user2
+      - POSTGRES_PASSWORD=2Rs5kD85DQk6
+      - POSTGRES_DB=meubancodedados
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./volumes/postgres/data:/var/lib/postgresql/data:rw
+      - ./deploy/init_postgres:/docker-entrypoint-initdb.d
+      - ./volumes/postgres/backups:/backups:rw  # Volume para backups do PostgreSQL
+    ports:
+      - "5432:5432"
+    networks:
+      - rede-sqlserver
+
+networks:
+  rede-sqlserver:
+    driver: bridge
