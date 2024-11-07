@@ -1,0 +1,16 @@
+# Ignorar dados do MySQL
+volumes/mysql/data/
+volumes/mysql/backups/
+
+# Ignorar dados do SQL Server
+volumes/sqlserver/sqlserver_data/
+volumes/sqlserver/sqlserver_log/
+volumes/sqlserver/sqlserver_secrets/
+volumes/sqlserver/backups/
+
+# Ignorar dados do PostgreSQL
+volumes/postgres/data/
+volumes/postgres/backups/
+
+# Ignorar arquivos de socket e outros temporários
+*.sock
